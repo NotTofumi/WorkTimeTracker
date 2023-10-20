@@ -25,6 +25,7 @@ class _CalendarPageState extends State<CalendarPage> {
   TimeOfDay endTime = TimeOfDay.now();
   DateTime startDateTime = DateTime.now();
   DateTime? endDateTime;
+  File file = File("./times.csv");
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +81,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   setState(() {
                     endTime = newEndTime;
                     timeToMinutes(endTime);
+                    writeToCSV("test", file);
                   });
                 }
               }
@@ -106,14 +108,9 @@ timeToMinutes(TimeOfDay time) {
   return (minutesInt);
 }
 
-writeToCSV(data, File file) async {
-  if (!await file.exists()){
-    file.create(recursive: true);
+writeToCSV(data, File file){
+  if(!file.existsSync()){
+      file.create(recursive: true);
   }
-  file.writeAsString(data);
-}
-
-checkForFile(path){
-  File file = File(path);
-  return file.exists();
+  file.writeAsStringSync(data);
 }
